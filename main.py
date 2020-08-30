@@ -15,7 +15,7 @@ import json
 #from unittest import TestCase
 import pandas as pd
 import time
-import locale
+#import locale
 import requests
 #import datetime
 from datetime import datetime,timedelta
