@@ -176,7 +176,10 @@ def top10(trend_text,A,B,ad): #top n value
     return(text,trend_plot,value_plot)
 
 
+msg ='Compte'
 
+
+r = requests.post(url, headers=headers , data = {'message':msg})
 
 
 run=0
