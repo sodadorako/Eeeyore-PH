@@ -68,7 +68,7 @@ d_slot2=df_slot2.to_dict('split')
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-locale.setlocale(locale.LC_ALL, 'en_US')
+
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
 consumer_key=environ['consumer_key']
