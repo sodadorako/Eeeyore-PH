@@ -47,7 +47,7 @@ def top10(trend_text,A,B): #top n value
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==40 or Timeupdate.minute==20)
+    if(Timeupdate.minute==46 or Timeupdate.minute==26)
     Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
     trend_text=trend_twitter()
     text1=top10(trend_text[0],0,5)
