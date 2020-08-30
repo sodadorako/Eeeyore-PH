@@ -341,8 +341,8 @@ while run<3:
 
         
 
-    time.sleep(30)
-    print(Timeupdate.minute)
+    time.sleep(50)
+
 
 
 
