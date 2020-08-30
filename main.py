@@ -5,6 +5,13 @@ import json
 import datetime as dt
 import  time
 
+url = 'https://notify-api.line.me/api/notify'
+token = environ['token']
+headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+msg ='Program runnning'
+r = requests.post(url, headers=headers , data = {'message':msg})
+
+
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
 consumer_key=environ['consumer_key']
@@ -13,11 +20,6 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = API(auth)
 
-url = 'https://notify-api.line.me/api/notify'
-token = environ['token']
-headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-msg ='Program runnning'
-r = requests.post(url, headers=headers , data = {'message':msg})
 
 def trend_twitter():  #ดึงข้อมูล Trends Twitter
     brazil_trends=api.trends_place(1118370)
@@ -51,6 +53,8 @@ while True:
     text1=top10(trend_text[0],0,5)
     api.update_status(status=text1)
     text2=top10(trend_text[0],6,10)
+    time.sleep(40)
+    api.update_status(status=text2)
     time.sleep(40)
 
 
