@@ -6,6 +6,21 @@ import  time
 from os import environ
 import json
 
+class FixedOffset(tzinfo):
+    def __init__(self, offset):
+        self.__offset = timedelta(hours=offset)
+        self.__dst = timedelta(hours=offset-1)
+        self.__name = ''
+
+    def utcoffset(self, dt):
+        return self.__offset
+
+    def tzname(self, dt):
+        return self.__name
+
+    def dst(self, dt):
+        return self.__dst
+
 
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
@@ -23,7 +38,7 @@ def trend_twitter():  #ดึงข้อมูล Trends Twitter
     Name_trend=[]
     tweet_volume=[]
     for i in trends[0]["trends"]:
-        if '#' in i["name"]:
+        if 'ASDFGHJ' in i["name"]:
             Name_trend.append(i["name"]) 
             tweet_volume.append(i["tweet_volume"])    
            
@@ -41,13 +56,13 @@ def top10(trend_text,A,B): #top n value
     
 
 while True:
-    Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==11 or Timeupdate.minute==41):
+    Timeupdate=dt.datetime.now(FixedOffset(9))
+    if(Timeupdate.minute==0 or Timeupdate.minute==30):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         trend_text=trend_twitter()
         text1=top10(trend_text[0],0,5)
         api.update_status(status=text1)
-        text2=top10(trend_text[0],6,10)
+        text2=top10(trend_text[0],5,10)
         time.sleep(40)
         api.update_status(status=text2)
     time.sleep(40)
