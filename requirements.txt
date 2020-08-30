@@ -1,2 +1,5 @@
 tweepy
 requests
+pandas
+locale
+datetime
