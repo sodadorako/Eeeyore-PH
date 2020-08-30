@@ -1,17 +1,9 @@
 import tweepy
 from tweepy import OAuthHandler
 from tweepy import API
-import json
 import datetime as dt
 import  time
-import requests
 from os import environ
-
-url = 'https://notify-api.line.me/api/notify'
-token = environ['token']
-headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-msg ='Program runnning'
-r = requests.post(url, headers=headers , data = {'message':msg})
 
 
 access_token=environ['access_token']
