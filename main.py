@@ -4,7 +4,7 @@ from tweepy import API
 import json
 import datetime as dt
 import  time
-
+import requests
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
