@@ -6,22 +6,6 @@ import  time
 from os import environ
 import json
 
-class FixedOffset(tzinfo):
-    def __init__(self, offset):
-        self.__offset = timedelta(hours=offset)
-        self.__dst = timedelta(hours=offset-1)
-        self.__name = ''
-
-    def utcoffset(self, dt):
-        return self.__offset
-
-    def tzname(self, dt):
-        return self.__name
-
-    def dst(self, dt):
-        return self.__dst
-
-
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
 consumer_key=environ['consumer_key']
@@ -56,7 +40,7 @@ def top10(trend_text,A,B): #top n value
     
 
 while True:
-    Timeupdate=dt.datetime.now(FixedOffset(9))
+    Timeupdate=dt.datetime.now()
     if(Timeupdate.minute==0 or Timeupdate.minute==30):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         trend_text=trend_twitter()
