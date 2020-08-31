@@ -37,23 +37,6 @@ auth.set_access_token(access_token, access_token_secret)
 api = API(auth)
 
 
-class FixedOffset(tzinfo):
-    def __init__(self, offset):
-        self.__offset = timedelta(hours=offset)
-        self.__dst = timedelta(hours=offset-1)
-        self.__name = ''
-
-    def utcoffset(self, dt):
-        return self.__offset
-
-    def tzname(self, dt):
-        return self.__name
-
-    def dst(self, dt):
-        return self.__dst
-
-
-
 def trend_twitter():  #ดึงข้อมูล Trends Twitter
     brazil_trends=api.trends_place(1118370)
     trends = json.loads(json.dumps(brazil_trends, indent=1))
