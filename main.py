@@ -11,11 +11,14 @@ import requests
 from io import BytesIO
 from datetime import tzinfo
 
+
+
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
 msg ='System Start'
 r = requests.post(url, headers=headers , data = {'message':msg})
+
 
 
 r = requests.get(environ['ggsh'])
@@ -24,7 +27,6 @@ df_slot1=pd.read_excel(BytesIO(data),sheet_name='Slot1')
 df_slot2=pd.read_excel(BytesIO(data),sheet_name='Slot2')
 d_slot1=df_slot1.to_dict('split')
 d_slot2=df_slot2.to_dict('split')
-
 
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
@@ -156,13 +158,13 @@ listhas=[]
 
 while True:
     Timeupdate=dt.datetime.now(FixedOffset(9))
-    if(Timeupdate.minute==30 or Timeupdate.minute==0):
+    if(Timeupdate.minute==15 or Timeupdate.minute==45):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
         
-        if(Timeupdate.minute==0):
+        if(Timeupdate.minute==15):
             timecheck=1
-        elif(Timeupdate.minute==30):
+        elif(Timeupdate.minute==45):
             timecheck=2
         
         for i in d_slot1['data']:
@@ -204,7 +206,7 @@ while True:
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==15 or Timeupdate.minute==45):
+    if(Timeupdate.minute==0 or Timeupdate.minute==30):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
