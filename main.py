@@ -125,10 +125,18 @@ while True:
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         trend_text=trend_twitter()
         text1=top10(trend_text[0],0,5)
-        api.update_status(status=text1)
+        try:
+            api.update_status(status=text1)
+        except:
+            text1=text1[30:]
+            api.update_status(status=text1)
         text2=top10(trend_text[0],5,10)
         time.sleep(40)
-        api.update_status(status=text2)
+        try:
+            api.update_status(status=text2)
+        except:
+            text2=text2[30:]
+            api.update_status(status=text2)
         
         for i in trend_text[0]:
             if i not in listhas:
