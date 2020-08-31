@@ -9,7 +9,7 @@ from datetime import datetime,timedelta
 import pandas as pd
 import requests
 from io import BytesIO
-from datetime import tzinfo
+#from datetime import tzinfo
 
 
 
@@ -157,14 +157,15 @@ listhas=[]
 
 
 while True:
-    Timeupdate=dt.datetime.now(FixedOffset(9))
-    if(Timeupdate.minute==15 or Timeupdate.minute==45):
+    #Timeupdate=dt.datetime.now(FixedOffset(9))
+    Timeupdate=dt.datetime.now()
+    if(Timeupdate.minute==18 or Timeupdate.minute==48):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
         
-        if(Timeupdate.minute==15):
+        if(Timeupdate.minute==18):
             timecheck=1
-        elif(Timeupdate.minute==45):
+        elif(Timeupdate.minute==48):
             timecheck=2
         
         for i in d_slot1['data']:
@@ -206,7 +207,7 @@ while True:
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==0 or Timeupdate.minute==30):
+    if(Timeupdate.minute==8 or Timeupdate.minute==38):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
