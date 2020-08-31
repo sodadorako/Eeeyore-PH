@@ -5,7 +5,7 @@ import datetime as dt
 import  time
 from os import environ
 import json
-
+from datetime import datetime,timedelta
 import pandas as pd
 
 access_token=environ['access_token']
@@ -90,13 +90,38 @@ def twitter_data(Name,lang,Retweets):
     #print('dfcom')
     return(df,now)
 
+def related_hashtag(df,text_has):
+    hastag=[]
+    #pd.DataFrame(k['fgfdgd'])
+    for i in df['Has']:
+        for items in i:
+            hastag.append(items['text'].lower())
+            #print(t['text'])
+
+        
+        df_hastag=pd.DataFrame({'#Hastag':hastag})
+        df_hastag['Count']=1
+        df_hastag=df_hastag.groupby(['#Hastag']).sum()
+        df_hastag=df_hastag.sort_values(by=['Count'], ascending=False)
+    df_hastag=df_hastag.head(4)
+    df_hastag=df_hastag.tail(3)
+    df_hastag=df_hastag.reset_index()
+    #print(len(df_hastag))
+    
+    for i in range(0,len(df_hastag)):
+        #print(df_hastag['#Hastag'][i])
+        text_has=text_has+'\n'+str(i+1)+') '+'#'+str(df_hastag['#Hastag'][i])
+    return(text_has)
+
+
+
 
 listhas=[]
 
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==0 or Timeupdate.minute==30):
+    if(Timeupdate.minute==20 or Timeupdate.minute==40):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         trend_text=trend_twitter()
         text1=top10(trend_text[0],0,5)
@@ -105,12 +130,12 @@ while True:
         time.sleep(40)
         api.update_status(status=text2)
         
-        Hashtag=top10(trend_text[0],0,10)
-        for i in Hashtag:
+        for i in trend_text[0]:
             if i not in listhas:
                 hashtag=i
                 listhas.append(i)
                 break
+                
         Retweets=" -filter:retweets"   #  " -filter:retweets"  ไม่รวม Retweet  , ""  รวม Retweet
         lang='' #'th' , 'en' , 'jp'  เว้นว่างสำหรับทุกภาษา 
         df,now=twitter_data(hashtag,lang,Retweets) 
@@ -118,7 +143,7 @@ while True:
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==15 or Timeupdate.minute==45):
+    if(Timeupdate.minute==35 or Timeupdate.minute==5):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
