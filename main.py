@@ -9,17 +9,6 @@ from datetime import datetime,timedelta
 import pandas as pd
 import requests
 from io import BytesIO
-#from datetime import tzinfo
-
-
-
-url = 'https://notify-api.line.me/api/notify'
-token = environ['token']
-headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-msg ='System Start'
-r = requests.post(url, headers=headers , data = {'message':msg})
-
-
 
 r = requests.get(environ['ggsh'])
 data = r.content
@@ -27,6 +16,7 @@ df_slot1=pd.read_excel(BytesIO(data),sheet_name='Slot1')
 df_slot2=pd.read_excel(BytesIO(data),sheet_name='Slot2')
 d_slot1=df_slot1.to_dict('split')
 d_slot2=df_slot2.to_dict('split')
+
 
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
@@ -55,9 +45,9 @@ def top10(trend_text,A,B,ad): #top n value
 
     text='Top Trends Japan '+Time
     for i in range(A,B):
-        text=text+'\n'+str(i+1)+') '+trend_text[i]
+        text=text+'\n'+str(i+1)+') '+trend_text[i]+'\n\n'+ad
         trend_plot.append(trend_text[i])
-    text=text+'\n\n'+str(ad)
+    text=text
     return(text)
 
 
@@ -140,26 +130,25 @@ listhas=[]
 
 
 while True:
-    #Timeupdate=dt.datetime.now(FixedOffset(9))
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==4 or Timeupdate.minute==34):
+    if(Timeupdate.minute==11 or Timeupdate.minute==41):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
         
-        if(Timeupdate.minute==4):
+        if(Timeupdate.minute==11):
             timecheck=1
-        elif(Timeupdate.minute==34):
+        elif(Timeupdate.minute==41):
             timecheck=2
         
         for i in d_slot1['data']:
             if(i[0]==Timeupdate.hour and i[1]==timecheck):
-                #print(i[5])
+                print(i[5])
                 Tweets_slot1=i[5]
 
         
         for i in d_slot2['data']:
             if(i[0]==Timeupdate.hour and i[1]==timecheck):
-                #print(i[5])
+                print(i[5])
                 Tweets_slot2=i[5]
 
         trend_text=trend_twitter()
@@ -190,7 +179,7 @@ while True:
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==8 or Timeupdate.minute==38):
+    if(Timeupdate.minute==26 or Timeupdate.minute==56):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
@@ -198,19 +187,12 @@ while True:
                 listhas.pop(0)
         except:
             time.sleep(60)        
-    if(Timeupdate.hour==19 and Timeupdate.minute==49):
-        r = requests.get(environ['ggsh'])
-        data = r.content
-        df_slot1=pd.read_excel(BytesIO(data),sheet_name='Slot1')
-        df_slot2=pd.read_excel(BytesIO(data),sheet_name='Slot2')
-        d_slot1=df_slot1.to_dict('split')
-        d_slot2=df_slot2.to_dict('split')
         
-        url = 'https://notify-api.line.me/api/notify'
-        token = environ['token']
-        headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-        msg ='System Refresh'
-        r = requests.post(url, headers=headers , data = {'message':msg})
+        
+        
+        
+        
+        
         
         
     time.sleep(40)
