@@ -142,13 +142,13 @@ listhas=[]
 while True:
     #Timeupdate=dt.datetime.now(FixedOffset(9))
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==23 or Timeupdate.minute==53):
+    if(Timeupdate.minute==4 or Timeupdate.minute==34):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
         
-        if(Timeupdate.minute==18):
+        if(Timeupdate.minute==4):
             timecheck=1
-        elif(Timeupdate.minute==48):
+        elif(Timeupdate.minute==34):
             timecheck=2
         
         for i in d_slot1['data']:
@@ -198,7 +198,7 @@ while True:
                 listhas.pop(0)
         except:
             time.sleep(60)        
-    if(Timeupdate.hour==23 and Timeupdate.minute==55):
+    if(Timeupdate.hour==19 and Timeupdate.minute==49):
         r = requests.get(environ['ggsh'])
         data = r.content
         df_slot1=pd.read_excel(BytesIO(data),sheet_name='Slot1')
