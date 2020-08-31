@@ -142,7 +142,7 @@ listhas=[]
 while True:
     #Timeupdate=dt.datetime.now(FixedOffset(9))
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==18 or Timeupdate.minute==48):
+    if(Timeupdate.minute==23 or Timeupdate.minute==53):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
         
