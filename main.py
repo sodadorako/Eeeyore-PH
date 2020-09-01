@@ -7,6 +7,7 @@ from os import environ
 import json
 from datetime import datetime,timedelta
 import pandas as pd
+from io import BytesIO
 
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
@@ -15,6 +16,14 @@ consumer_secret=environ['consumer_secret']
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = API(auth)
+
+r = requests.get(environ['ggsh'])
+data = r.content
+df_slot1=pd.read_excel(BytesIO(data),sheet_name='Slot1')
+df_slot2=pd.read_excel(BytesIO(data),sheet_name='Slot2')
+d_slot1=df_slot1.to_dict('split')
+d_slot2=df_slot2.to_dict('split')
+
 
 
 def trend_twitter():  #ดึงข้อมูล Trends Twitter
@@ -30,14 +39,14 @@ def trend_twitter():  #ดึงข้อมูล Trends Twitter
            
     return(Name_trend,tweet_volume)
 
-def top10(trend_text,A,B): #top n value 
+def top10(trend_text,A,B,ad): #top n value 
     trend_plot=[]
 
     text='Top Trends Japan '+Time
     for i in range(A,B):
         text=text+'\n'+str(i+1)+') '+trend_text[i]
         trend_plot.append(trend_text[i])
-    text=text
+    text=text+"\n\n"+str(ad)
     return(text)
 
 
@@ -123,14 +132,30 @@ while True:
     Timeupdate=dt.datetime.now()
     if(Timeupdate.minute==45 or Timeupdate.minute==15):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
+        
+        if(Timeupdate.minute==15):
+            timecheck=1
+        elif(Timeupdate.minute==45):
+            timecheck=2
+        
+        for i in d_slot1['data']:
+            if(i[0]==Timeupdate.hour and i[1]==timecheck):
+                #print(i[5])
+                Tweets_slot1=i[5]
+                
+        for i in d_slot2['data']:
+            if(i[0]==Timeupdate.hour and i[1]==timecheck):
+                #print(i[5])
+                Tweets_slot2=i[5] 
+        
         trend_text=trend_twitter()
-        text1=top10(trend_text[0],0,5)
+        text1=top10(trend_text[0],0,5,Tweets_slot2)
         try:
             api.update_status(status=text1)
         except:
             text1=text1[30:]
             api.update_status(status=text1)
-        text2=top10(trend_text[0],5,10)
+        text2=top10(trend_text[0],5,10,Tweets_slot1)
         time.sleep(40)
         try:
             api.update_status(status=text2)
