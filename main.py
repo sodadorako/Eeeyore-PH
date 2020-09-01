@@ -131,12 +131,12 @@ listhas=[]
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==45 or Timeupdate.minute==15):
+    if(Timeupdate.minute==0 or Timeupdate.minute==30):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         
-        if(Timeupdate.minute==15):
+        if(Timeupdate.minute==0):
             timecheck=1
-        elif(Timeupdate.minute==45):
+        elif(Timeupdate.minute==30):
             timecheck=2
         
         for i in d_slot1['data']:
@@ -177,7 +177,7 @@ while True:
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==0 or Timeupdate.minute==30):
+    if(Timeupdate.minute==15 or Timeupdate.minute==45):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
