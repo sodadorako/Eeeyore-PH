@@ -8,6 +8,7 @@ import json
 from datetime import datetime,timedelta
 import pandas as pd
 from io import BytesIO
+import requests
 
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
