@@ -1,6 +1,5 @@
 tweepy
 requests
 pandas
-datetime
 io
 json
