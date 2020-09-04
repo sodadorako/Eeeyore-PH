@@ -1,4 +1,4 @@
- [1]: import tweepy
+import tweepy
 from tweepy import OAuthHandler
 from tweepy import API
 import datetime as dt
