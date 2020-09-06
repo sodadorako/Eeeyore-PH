@@ -121,7 +121,7 @@ listhas=[]
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==37 or Timeupdate.minute==40):
+    if(Timeupdate.minute==45 or Timeupdate.minute==40):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         trend_text=trend_twitter()
         text1=top10(trend_text[0],0,5)
