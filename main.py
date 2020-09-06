@@ -7,7 +7,7 @@ from os import environ
 import json
 from datetime import datetime,timedelta
 import pandas as pd
-
+import requests
 
 file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
 df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
