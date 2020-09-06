@@ -193,7 +193,19 @@ while True:
             if(len(listhas)>10):
                 listhas.pop(0)
         except:
-            time.sleep(60)        
+            time.sleep(60)
+            
+    if(Timeupdate.hour==23 and Timeupdate.minute==55):
+        try:
+            file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
+            df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
+            df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
+
+            d_slot1=df_slot1.to_dict('split')
+            d_slot2=df_slot2.to_dict('split')
+            
+        except:
+            time.sleep(60) 
         
         
         
