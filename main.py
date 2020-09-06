@@ -1,4 +1,4 @@
-import tweepy
+ import tweepy
 from tweepy import OAuthHandler
 from tweepy import API
 import datetime as dt
@@ -17,8 +17,8 @@ d_slot1=df_slot1.to_dict('split')
 d_slot2=df_slot2.to_dict('split')
 
 
-url = environ['token']
-token = 'YxnlWf0UZjJioWuSjilvEqxtEWd2kfhME8sc8umqZ3A'
+url = 'https://notify-api.line.me/api/notify'
+token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
 msg ='Program runnning'
 r = requests.post(url, headers=headers , data = {'message':msg})
@@ -26,9 +26,9 @@ r = requests.post(url, headers=headers , data = {'message':msg})
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==23 or Timeupdate.minute==10):
+    if(Timeupdate.minute==27 or Timeupdate.minute==10):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
-        if(Timeupdate.minute==23):
+        if(Timeupdate.minute==27):
             timecheck=1
         elif(Timeupdate.minute==10):
             timecheck=2
@@ -40,9 +40,4 @@ while True:
                 Tweets_slot2=i[5]
         msg=Tweets_slot2
         r = requests.post(url, headers=headers , data = {'message':msg})
- 
-        
-
-
-
-
+    time.sleep(40)
