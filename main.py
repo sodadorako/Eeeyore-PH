@@ -8,6 +8,7 @@ import json
 from datetime import datetime,timedelta
 import pandas as pd
 import requests
+from datetime import tzinfo
 
 class FixedOffset(tzinfo):
     def __init__(self, offset):
