@@ -26,9 +26,9 @@ r = requests.post(url, headers=headers , data = {'message':msg})
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==3 or Timeupdate.minute==10):
+    if(Timeupdate.minute==23 or Timeupdate.minute==10):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
-        if(Timeupdate.minute==3):
+        if(Timeupdate.minute==23):
             timecheck=1
         elif(Timeupdate.minute==10):
             timecheck=2
