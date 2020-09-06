@@ -1,4 +1,4 @@
- import tweepy
+import tweepy
 from tweepy import OAuthHandler
 from tweepy import API
 import datetime as dt
@@ -26,9 +26,9 @@ r = requests.post(url, headers=headers , data = {'message':msg})
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==27 or Timeupdate.minute==10):
+    if(Timeupdate.minute==29 or Timeupdate.minute==10):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
-        if(Timeupdate.minute==27):
+        if(Timeupdate.minute==29):
             timecheck=1
         elif(Timeupdate.minute==10):
             timecheck=2
