@@ -21,13 +21,9 @@ file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-
 df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
 df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
 
-d_slot1=df_slot1.to_dict('split')
-d_slot2=df_slot2.to_dict('split')
-
-
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-msg ='Program runnning222'
+msg =df_slot2['Username'][0]
 r = requests.post(url, headers=headers , data = {'message':msg})
 
