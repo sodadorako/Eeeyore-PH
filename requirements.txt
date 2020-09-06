@@ -2,3 +2,4 @@ tweepy
 requests
 pandas
 gspread-pandas
+xlrd
