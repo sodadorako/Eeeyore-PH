@@ -8,6 +8,14 @@ import json
 from datetime import datetime,timedelta
 import pandas as pd
 
+
+file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
+df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
+df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
+
+d_slot1=df_slot1.to_dict('split')
+d_slot2=df_slot2.to_dict('split')
+
 access_token=environ['access_token']
 access_token_secret=environ['access_token_secret']
 consumer_key=environ['consumer_key']
@@ -30,14 +38,14 @@ def trend_twitter():  #ดึงข้อมูล Trends Twitter
            
     return(Name_trend,tweet_volume)
 
-def top10(trend_text,A,B): #top n value 
+def top10(trend_text,A,B,ad): #top n value 
     trend_plot=[]
 
     text='Top Trends Japan '+Time
     for i in range(A,B):
         text=text+'\n'+str(i+1)+') '+trend_text[i]
         trend_plot.append(trend_text[i])
-    text=text
+    text=text+"\n\n"+str(ad)
     return(text)
 
 
@@ -121,16 +129,27 @@ listhas=[]
 
 while True:
     Timeupdate=dt.datetime.now()
-    if(Timeupdate.minute==45 or Timeupdate.minute==40):
+    if(Timeupdate.minute==55 or Timeupdate.minute==10):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
+        if(Timeupdate.minute==55):
+            timecheck=1
+        elif(Timeupdate.minute==10):
+            timecheck=2
+        for i in d_slot1['data']:
+            if(i[0]==Timeupdate.hour and i[1]==timecheck):
+                Tweets_slot1=i[5]
+        for i in d_slot2['data']:
+            if(i[0]==Timeupdate.hour and i[1]==timecheck):
+                Tweets_slot2=i[5]
+        
         trend_text=trend_twitter()
-        text1=top10(trend_text[0],0,5)
+        text1=top10(trend_text[0],0,5,Tweets_slot2)
         try:
             api.update_status(status=text1)
         except:
             text1=text1[30:]
             api.update_status(status=text1)
-        text2=top10(trend_text[0],5,10)
+        text2=top10(trend_text[0],5,10,Tweets_slot1)
         time.sleep(40)
         try:
             api.update_status(status=text2)
