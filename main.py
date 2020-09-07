@@ -9,7 +9,6 @@ from datetime import datetime,timedelta
 import pandas as pd
 import requests
 from datetime import tzinfo
-import numpy as np
 
 class FixedOffset(tzinfo):
     def __init__(self, offset):
@@ -227,7 +226,7 @@ while True:
             
         except:
             time.sleep(60)
-    if(Timeupdate.hour==22 and Timeupdate.minute==55):
+    if(Timeupdate.hour==23 and Timeupdate.minute==20):
         Data=list()  
         try:
             for i in range(1,25):
@@ -271,8 +270,9 @@ while True:
         df['hour'] = pd.DatetimeIndex(df['created_at']).hour
         df['min'] = pd.DatetimeIndex(df['created_at']).minute        
         
-        df=df[(df.day == today.day) & (df.month == today.month)]
-        df['Type']=np.where(df['min']<10,'0',np.where(df['min']<20,'A',np.where(df['min']<40,'0',np.where(df['min']<60,'B',np.where))))
+        df=df[(df.day == Timeupdate.day) & (df.month == Timeupdate.month)]
+        df.loc[ (df['min'] <= 2) & (df['min'] >= 0 ), 'Type'] = 'A'
+        df.loc[ (df['min'] <= 32) & (df['min'] >= 20 ), 'Type'] = 'B'
         df['Type']=df['hour'].astype(str)+df['Type']
         
         list_time=['0A','0B','1A','1B','2A','2B','3A','3B','4A','4B','5A','5B','6A','6B','7A','7B','8A','8B','9A','9B','10A','10B','11A','11B','12A','12B','13A','13B','14A','14B','15A','15B','16A','16B','17A','17B','18A','18B','19A','19B','20A','20B','21A','21B','22A','22B','23A','23B']       
