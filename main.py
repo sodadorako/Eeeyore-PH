@@ -24,11 +24,7 @@ class FixedOffset(tzinfo):
 
     def dst(self, dt):
         return self.__dst
-
     
-    
-    
-diffollow=0 
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
@@ -151,7 +147,7 @@ def related_hashtag(df,text_has):
 
 
 listhas=[]
-
+diffollow=0 
 
 while True:
     Timeupdate=dt.datetime.now(FixedOffset(9))
@@ -283,7 +279,7 @@ while True:
         text='\nError slot BearGuin   '+today.strftime("%Y-%m-%d")
 
         for i in Table[0]:
-        text=text+'\nSlot   '+i        
+            text=text+'\nSlot   '+i        
         url = 'https://notify-api.line.me/api/notify'
         token = environ['token']
         headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
