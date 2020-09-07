@@ -9,7 +9,6 @@ from datetime import datetime,timedelta
 import pandas as pd
 import requests
 from datetime import tzinfo
-from datetime import date
 import numpy as np
 
 class FixedOffset(tzinfo):
@@ -30,7 +29,7 @@ class FixedOffset(tzinfo):
     
     
     
-diffollow=0    
+diffollow=0 
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
@@ -265,7 +264,7 @@ while True:
         df=df.set_index('created_at')
         df=df.tz_localize('Etc/GMT+9', level=0).tz_convert(None)
         df=df.reset_index()                
-        today = date.today()
+        today = Timeupdate
         df['year'] = pd.DatetimeIndex(df['created_at']).year
         df['month'] = pd.DatetimeIndex(df['created_at']).month
         df['day'] = pd.DatetimeIndex(df['created_at']).day
