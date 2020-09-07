@@ -222,7 +222,7 @@ while True:
             
         except:
             time.sleep(60)
-    if(Timeupdate.hour==23 and Timeupdate.minute==20):
+    if(Timeupdate.hour==23 and Timeupdate.minute==23):
         Data=list()  
         try:
             for i in range(1,25):
