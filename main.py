@@ -25,6 +25,16 @@ class FixedOffset(tzinfo):
     def dst(self, dt):
         return self.__dst
 
+    
+    
+    
+    
+url = 'https://notify-api.line.me/api/notify'
+token = environ['token']
+headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+msg ='Program runnning Japan'
+r = requests.post(url, headers=headers , data = {'message':msg})
+
 file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
 df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
 df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
@@ -192,10 +202,12 @@ while True:
             time.sleep(60)
             if(len(listhas)>10):
                 listhas.pop(0)
+                if(len(listhas)>10):
+                    listhas.pop(0)
         except:
             time.sleep(60)
             
-    if(Timeupdate.hour==23 and Timeupdate.minute==55):
+    if(Timeupdate.hour==22 and Timeupdate.minute==22):
         try:
             file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
             df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
@@ -204,8 +216,15 @@ while True:
             d_slot1=df_slot1.to_dict('split')
             d_slot2=df_slot2.to_dict('split')
             
+            
+            url = 'https://notify-api.line.me/api/notify'
+            token = environ['token']
+            headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+            msg ='Reset Ads'
+            r = requests.post(url, headers=headers , data = {'message':msg})
+            
         except:
-            time.sleep(60) 
+            time.sleep(60)
         
         
         
