@@ -153,9 +153,9 @@ while True:
     Timeupdate=dt.datetime.now(FixedOffset(7))
     if(Timeupdate.minute==15 or Timeupdate.minute==45):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
-        if(Timeupdate.minute==0):
+        if(Timeupdate.minute==15):
             timecheck=1
-        elif(Timeupdate.minute==30):
+        elif(Timeupdate.minute==45):
             timecheck=2
         for i in d_slot1['data']:
             if(i[0]==Timeupdate.hour and i[1]==timecheck):
