@@ -9,6 +9,8 @@ from datetime import datetime,timedelta
 import pandas as pd
 import requests
 from datetime import tzinfo
+from datetime import date
+import numpy as np
 
 class FixedOffset(tzinfo):
     def __init__(self, offset):
@@ -28,7 +30,7 @@ class FixedOffset(tzinfo):
     
     
     
-    
+diffollow=0    
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
@@ -222,15 +224,74 @@ while True:
             headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
             msg ='Reset Ads'
             r = requests.post(url, headers=headers , data = {'message':msg})
+            time.sleep(60)
             
         except:
             time.sleep(60)
+    if(Timeupdate.hour==22 and Timeupdate.minute==48):
+        Data=list()  
+        try:
+            for i in range(1,25):
+                for tweet in api.user_timeline(id="KumaginTrend",page=i):
+                    Data.append({'created_at':tweet.created_at,
+                        'texts':tweet.text,
+                        'id':tweet.id,
+                        'source':tweet.source,
+                        'geo':tweet.geo,
+                        'lang':tweet.lang,
+                        'Retweet':tweet.retweet_count,
+                        'Favorite':tweet.favorite_count,
+                        'id_str':tweet.id_str,
+                        'place':tweet.place,
+                        'entities':tweet.entities,
+                        'Has':tweet.entities.get('hashtags'),
+                        'followers_count':tweet.user.followers_count,
+                        'protected':tweet.user.protected,
+                        'description':tweet.user.description,
+                        'name':tweet.user.screen_name,
+                        'friends_count':tweet.user.friends_count,
+                        'statuses_count':tweet.user.statuses_count,
+                        'ids':tweet.user.id,
+                        'location':tweet.user.location,
+                        'profile_image_url':tweet.user.profile_image_url,
+                        'join_date':tweet.user.created_at
+                    })
+
+
+
+        except tweepy.TweepError:
+            time.sleep(20) # sleep for 2 minutes. You may try different time
+        df=pd.DataFrame(Data)
+        df=df.set_index('created_at')
+        df=df.tz_localize('Etc/GMT+9', level=0).tz_convert(None)
+        df=df.reset_index()                
+        today = date.today()
+        df['year'] = pd.DatetimeIndex(df['created_at']).year
+        df['month'] = pd.DatetimeIndex(df['created_at']).month
+        df['day'] = pd.DatetimeIndex(df['created_at']).day
+        df['hour'] = pd.DatetimeIndex(df['created_at']).hour
+        df['min'] = pd.DatetimeIndex(df['created_at']).minute        
         
+        df=df[(df.day == today.day) & (df.month == today.month)]
+        df['Type']=np.where(df['min']<10,'0',np.where(df['min']<20,'A',np.where(df['min']<40,'0',np.where(df['min']<60,'B',np.where))))
+        df['Type']=df['hour'].astype(str)+df['Type']
         
+        list_time=['0A','0B','1A','1B','2A','2B','3A','3B','4A','4B','5A','5B','6A','6B','7A','7B','8A','8B','9A','9B','10A','10B','11A','11B','12A','12B','13A','13B','14A','14B','15A','15B','16A','16B','17A','17B','18A','18B','19A','19B','20A','20B','21A','21B','22A','22B','23A','23B']       
+
+        Table=pd.DataFrame(list_time)
+        Table=Table[~Table[0].isin(df['Type'])]
         
+        text='\nError slot BearGuin   '+today.strftime("%Y-%m-%d")
+
+        for i in Table[0]:
+        text=text+'\nSlot   '+i        
+        url = 'https://notify-api.line.me/api/notify'
+        token = environ['token']
+        headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
         
-        
-        
-        
+        df=df.drop(columns=['year','month','day','hour','min','Type'])
+        msg =text+'\n\n Retweets :  '+str(df['Retweet'].sum())+'\n Likes :  '+str(df['Favorite'].sum())+'\n Followers :  '+str(round(df['followers_count'].mean(),0)-diffollow)+' Change: '+str(df['followers_count'].mean())
+        diffollow=df['followers_count'].mean()
+        r = requests.post(url, headers=headers , data = {'message':msg})
         
     time.sleep(40)
