@@ -288,5 +288,6 @@ while True:
         msg =text+'\n\n Retweets :  '+str(df['Retweet'].sum())+'\n Likes :  '+str(df['Favorite'].sum())+'\n Followers :  '+str(round(df['followers_count'].mean(),0)-diffollow)+' Change: '+str(df['followers_count'].mean())
         diffollow=df['followers_count'].mean()
         r = requests.post(url, headers=headers , data = {'message':msg})
+        time.sleep(40)
         
     time.sleep(40)
