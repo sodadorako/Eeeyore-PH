@@ -28,7 +28,7 @@ class FixedOffset(tzinfo):
 url = 'https://notify-api.line.me/api/notify'
 token = environ['token']
 headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-msg ='Program runnning Japan'
+msg ='Program runnning Top Trends Thailand'
 r = requests.post(url, headers=headers , data = {'message':msg})
 
 file_name = 'https://docs.google.com/spreadsheet/ccc?key=1RxB3Oa3QyfcMz15-WhHFlsWVJiDc-c6umNQHDpvYEIQ&output=xlsx'
@@ -216,13 +216,13 @@ while True:
             url = 'https://notify-api.line.me/api/notify'
             token = environ['token']
             headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
-            msg ='Reset Ads'
+            msg ='Reset Ads BearGuin'
             r = requests.post(url, headers=headers , data = {'message':msg})
             time.sleep(60)
             
         except:
             time.sleep(60)
-    if(Timeupdate.hour==0 and Timeupdate.minute==6):
+    if(Timeupdate.hour==23 and Timeupdate.minute==55):
         Data=list()  
         try:
             for i in range(1,25):
