@@ -31,7 +31,7 @@ headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'B
 msg ='Program runnning Japan'
 r = requests.post(url, headers=headers , data = {'message':msg})
 
-file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
+file_name = 'https://docs.google.com/spreadsheet/ccc?key=1RxB3Oa3QyfcMz15-WhHFlsWVJiDc-c6umNQHDpvYEIQ&output=xlsx'
 df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
 df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
 
@@ -48,13 +48,13 @@ api = API(auth)
 
 
 def trend_twitter():  #ดึงข้อมูล Trends Twitter
-    brazil_trends=api.trends_place(1118370)
+    brazil_trends=api.trends_place(1225448)
     trends = json.loads(json.dumps(brazil_trends, indent=1))
     
     Name_trend=[]
     tweet_volume=[]
     for i in trends[0]["trends"]:
-        if 'ASDFGHJ' not in i["name"]:
+        if '#' in i["name"]:
             Name_trend.append(i["name"]) 
             tweet_volume.append(i["tweet_volume"])    
            
@@ -63,7 +63,7 @@ def trend_twitter():  #ดึงข้อมูล Trends Twitter
 def top10(trend_text,A,B,ad): #top n value 
     trend_plot=[]
 
-    text='Top Trends Japan '+Time
+    text='Top Trends Thailand '+Time
     for i in range(A,B):
         text=text+'\n'+str(i+1)+') '+trend_text[i]
         trend_plot.append(trend_text[i])
@@ -109,7 +109,7 @@ def twitter_data(Name,lang,Retweets):
         #print('Maximum')
     df=pd.DataFrame(Data)
     df=df.set_index('created_at')
-    df=df.tz_localize('Etc/GMT+9', level=0).tz_convert(None)
+    df=df.tz_localize('Etc/GMT+7', level=0).tz_convert(None)
     df=df.reset_index()
     #print(df)
     df['today']=pd.Timestamp.today()
@@ -133,8 +133,8 @@ def related_hashtag(df,text_has):
         df_hastag['Count']=1
         df_hastag=df_hastag.groupby(['#Hastag']).sum()
         df_hastag=df_hastag.sort_values(by=['Count'], ascending=False)
-    df_hastag=df_hastag.head(4)
-    df_hastag=df_hastag.tail(3)
+    df_hastag=df_hastag.head(6)
+    df_hastag=df_hastag.tail(5)
     df_hastag=df_hastag.reset_index()
     #print(len(df_hastag))
     
@@ -150,8 +150,8 @@ listhas=[]
 diffollow=0 
 
 while True:
-    Timeupdate=dt.datetime.now(FixedOffset(9))
-    if(Timeupdate.minute==0 or Timeupdate.minute==30):
+    Timeupdate=dt.datetime.now(FixedOffset(7))
+    if(Timeupdate.minute==15 or Timeupdate.minute==45):
         Time=str(Timeupdate.strftime("%x"))+'  '+str(Timeupdate.strftime("%X"))
         if(Timeupdate.minute==0):
             timecheck=1
@@ -188,11 +188,11 @@ while True:
         Retweets=" -filter:retweets"   #  " -filter:retweets"  ไม่รวม Retweet  , ""  รวม Retweet
         lang='' #'th' , 'en' , 'jp'  เว้นว่างสำหรับทุกภาษา 
         df,now=twitter_data(hashtag,lang,Retweets) 
-        text_has=hashtag+' のデータ'+'   '+str(now)+'\nツイート   :  '+str(len(df))+'\nアカウント  :  '+str(df[['ids']].drop_duplicates().count()[0])+'\nリツイート  :  '+str(df['Retweet'].sum(axis = 0, skipna = True))+'\nいいねの数  :  '+str(df['Favorite'].sum(axis = 0, skipna = True))+'\n関連ハッシュタグ・トップ3'
+        text_has='Data on '+hashtag+'   '+str(now)+'\nTweets   :  '+str(len(df))+'\nUSERS  :  '+str(df[['ids']].drop_duplicates().count()[0])+'\nRetweets  :  '+str(df['Retweet'].sum(axis = 0, skipna = True))+'\nLikes  :  '+str(df['Favorite'].sum(axis = 0, skipna = True))+'\nTop 5 Related #'
         df_has=related_hashtag(df,text_has)
         time.sleep(60)
                 
-    if(Timeupdate.minute==15 or Timeupdate.minute==45):
+    if(Timeupdate.minute==0 or Timeupdate.minute==30):
         try:
             api.update_status(status=df_has)
             time.sleep(60)
@@ -203,9 +203,9 @@ while True:
         except:
             time.sleep(60)
             
-    if(Timeupdate.hour==22 and Timeupdate.minute==22):
+    if(Timeupdate.hour==0 and Timeupdate.minute==3):
         try:
-            file_name = 'https://docs.google.com/spreadsheet/ccc?key=19TWYLSwgC4cJe9mslepF1-et9RSP-C3VxQEtYxSS2yw&output=xlsx'
+            file_name = 'https://docs.google.com/spreadsheet/ccc?key=1RxB3Oa3QyfcMz15-WhHFlsWVJiDc-c6umNQHDpvYEIQ&output=xlsx'
             df_slot2 = pd.read_excel(file_name,sheet_name='Slot2')
             df_slot1 = pd.read_excel(file_name,sheet_name='Slot1')
 
@@ -222,11 +222,11 @@ while True:
             
         except:
             time.sleep(60)
-    if(Timeupdate.hour==23 and Timeupdate.minute==28):
+    if(Timeupdate.hour==0 and Timeupdate.minute==6):
         Data=list()  
         try:
             for i in range(1,25):
-                for tweet in api.user_timeline(id="KumaginTrend",page=i):
+                for tweet in api.user_timeline(id="BearguinTrend",page=i):
                     Data.append({'created_at':tweet.created_at,
                         'texts':tweet.text,
                         'id':tweet.id,
@@ -257,7 +257,7 @@ while True:
             time.sleep(20) # sleep for 2 minutes. You may try different time
         df=pd.DataFrame(Data)
         df=df.set_index('created_at')
-        df=df.tz_localize('Etc/GMT+9', level=0).tz_convert(None)
+        df=df.tz_localize('Etc/GMT+7', level=0).tz_convert(None)
         df=df.reset_index()                
         today = Timeupdate
         df['year'] = pd.DatetimeIndex(df['created_at']).year
@@ -267,8 +267,8 @@ while True:
         df['min'] = pd.DatetimeIndex(df['created_at']).minute        
         
         df=df[(df.day == Timeupdate.day) & (df.month == Timeupdate.month)]
-        df.loc[ (df['min'] <= 2) & (df['min'] >= 0 ), 'Type'] = 'A'
-        df.loc[ (df['min'] <= 32) & (df['min'] >= 20 ), 'Type'] = 'B'
+        df.loc[ (df['min'] <= 17) & (df['min'] >= 14 ), 'Type'] = 'A'
+        df.loc[ (df['min'] <= 47) & (df['min'] >= 44 ), 'Type'] = 'B'
         df['Type']=df['hour'].astype(str)+df['Type']
         
         list_time=['0A','0B','1A','1B','2A','2B','3A','3B','4A','4B','5A','5B','6A','6B','7A','7B','8A','8B','9A','9B','10A','10B','11A','11B','12A','12B','13A','13B','14A','14B','15A','15B','16A','16B','17A','17B','18A','18B','19A','19B','20A','20B','21A','21B','22A','22B','23A','23B']       
